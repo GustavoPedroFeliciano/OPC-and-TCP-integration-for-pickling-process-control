@@ -13,11 +13,6 @@
  * a biblioteca Winsock2 (Ws2_32.lib) no projeto ! (No Visual Studio 2010:
  * Projects->Properties->Configuration Properties->Linker->Input->A dditional Dependencies).
  *
- * ======================================================================================
- * ATENCAO: APESAR DE TER SIDO TESTADO PELO PROFESSOR, N√O H¡ GARANTIAS DE QUE ESTE
- * PROGRAMA ESTEJA LIVRE DE ERROS. SE VOC  ENCONTRAR ALGUM ERRO NO PROGRAMA, COMUNIQUE O
- * MESMO AO PROFESSOR INDICANDO, SEMPRE QUE POSSÕVEL, UMA FORMA DE CORRIGI-LO.
- * ======================================================================================
  */
 
 #include <atlbase.h>  
@@ -69,7 +64,7 @@ int nTecla;
 #define CYAN    FOREGROUND_BLUE  | FOREGROUND_GREEN      | FOREGROUND_INTENSITY
 #define PURPLE  FOREGROUND_RED   | FOREGROUND_BLUE
 
-// FunÁ„o para checar erro de comunicaÁ„o no socket
+// Fun√ß√£o para checar erro de comunica√ß√£o no socket
 int CheckSocketError(int status, HANDLE hOut) {
 	int erro;
 
@@ -79,17 +74,17 @@ int CheckSocketError(int status, HANDLE hOut) {
 		if (erro == WSAEWOULDBLOCK) {
 			printf("Timeout na operacao de RECV! errno = %d - reiniciando...\n\n", erro);
 			SetConsoleTextAttribute(hOut, WHITE);
-			return(-1); // acarreta reinÌcio da espera de mensagens no programa principal
+			return(-1); // acarreta rein√≠cio da espera de mensagens no programa principal
 		}
 		else if (erro == WSAECONNABORTED) {
 			printf("Conexao abortada pelo cliente TCP\n\n");
 			SetConsoleTextAttribute(hOut, WHITE);
-			return(-1); // acarreta reinÌcio da espera de mensagens no programa principal
+			return(-1); // acarreta rein√≠cio da espera de mensagens no programa principal
 		}
 		else if (erro == WSAETIMEDOUT) {
 			printf("Conexao interrompida - reiniciando...\n\n");
 			SetConsoleTextAttribute(hOut, WHITE);
-			return(-1); // acarreta reinÌcio da espera de mensagens no programa principal
+			return(-1); // acarreta rein√≠cio da espera de mensagens no programa principal
 		}
 		else {
 			printf("Erro de conexao! valor = %d\n\n", erro);
@@ -99,19 +94,19 @@ int CheckSocketError(int status, HANDLE hOut) {
 	else if (status == 0) {
 		printf("Conexao com o servidor encerrada prematuramente! status = %d\n\n", status);
 		SetConsoleTextAttribute(hOut, WHITE);
-		return(-1); // acarreta reinÌcio da espera de mensagens no programa principal
+		return(-1); // acarreta rein√≠cio da espera de mensagens no programa principal
 	}
 	else return(0);
 }
 
-// FunÁ„o para encerrar conex„o de sockets
+// Fun√ß√£o para encerrar conex√£o de sockets
 
 void CloseConnection(SOCKET connfd) {
 	closesocket(connfd);
 	WSACleanup();
 }
 
-// FunÁ„o de escrita no servidor
+// Fun√ß√£o de escrita no servidor
 void WriteItem(IUnknown* pGroupIUnknown, OPCHANDLE hServerItem, VARIANT& varValue)
 {
 	IOPCSyncIO* pIOPCSyncIO;
@@ -140,7 +135,7 @@ DWORD WINAPI Cliente_socketHelper(LPVOID);
 HANDLE mutex_socket;
 HANDLE mutex_escrita;
 
-// Vari·veis socket
+// Vari√°veis socket
 WSADATA     wsaData;
 SOCKET      cliente, connfd;
 SOCKET      servidor;
@@ -203,17 +198,17 @@ int main(int argc, char **argv)
 	// Handle do console
 	HANDLE hOut;
 
-	// ObtÈm um handle para a saÌda da console
+	// Obt√©m um handle para a sa√≠da da console
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (hOut == INVALID_HANDLE_VALUE)
-		printf("Erro ao obter handle para a saÌda da console\n");
+		printf("Erro ao obter handle para a sa√≠da da console\n");
 	SetConsoleTextAttribute(hOut, WHITE);
 
 	// Inicializa objetos
 	tecla_s = CreateEvent(NULL, TRUE, FALSE, "Tecla_s");              // Evento para tecla s pressionada
 	tecla_ESC = CreateEvent(NULL, TRUE, FALSE, "Tecla_ESC");            // Evento para tecla ESC pressionada
 	eventoSempreOn = CreateEvent(NULL, TRUE, TRUE, "EventoSempreOn");   // Evento para evento sempre on    
-	mutex_socket = CreateMutex(NULL, FALSE, "Mutex_socket");            // Mutex pra acesso ˙nico do socket
+	mutex_socket = CreateMutex(NULL, FALSE, "Mutex_socket");            // Mutex pra acesso √∫nico do socket
 	mutex_escrita = CreateMutex(NULL, FALSE, "Mutex_escrita");
 
 	SetConsoleTextAttribute(hOut, HLGREEN);
@@ -226,7 +221,7 @@ int main(int argc, char **argv)
 	printf("4. A tecla ESC deve ser pressionada para finalizar a aplicacao.\n");
 	printf("5. Caso queira finalizar o Servidor OPC e o Servidor de Socket, pressionar ESC no terminal da aplicacao.\n");
 	printf("6. Caso queira finalizar a conexao de sockets, pressionar ESC no terminal.\n");
-	printf("7. Caso queira finalizar apenas o OPC, parar o serviÁo do Matrikon OPC Server.\n");
+	printf("7. Caso queira finalizar apenas o OPC, parar o servi√ßo do Matrikon OPC Server.\n");
 	printf("=====================================================================================================================\n");
 	SetConsoleTextAttribute(hOut, WHITE);
 
@@ -236,7 +231,7 @@ int main(int argc, char **argv)
 
 	// Cria as Threads
 	HANDLE opc = CreateThread(NULL, 0, Cliente_OPC, NULL, 0, NULL);
-	/* ESPERA 2 SEGUNDOS PARA INICIAR O CLIENTE SOCKET PORQUE O OPC EST¡ INICIANDO*/
+	/* ESPERA 2 SEGUNDOS PARA INICIAR O CLIENTE SOCKET PORQUE O OPC EST√Å INICIANDO*/
 	Sleep(2000);
 
 	HANDLE client_socketHelper = CreateThread(NULL, 0, Cliente_socketHelper, NULL, 0, NULL);
@@ -249,10 +244,10 @@ int main(int argc, char **argv)
 
 		switch (nTecla)
 		{
-		case(s):    // Min˙scula
+		case(s):    // Min√∫scula
 			SetEvent(tecla_s);
 			break;
-		case(S):    // Mai˙sculo
+		case(S):    // Mai√∫sculo
 			SetEvent(tecla_s);
 			break;
 		}
@@ -287,19 +282,19 @@ DWORD WINAPI Cliente_socketHelper(LPVOID) {
 	// Handle do console
 	HANDLE hOut;
 
-	// ObtÈm um handle para a saÌda da console
+	// Obt√©m um handle para a sa√≠da da console
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (hOut == INVALID_HANDLE_VALUE)
-		printf("Erro ao obter handle para a saÌda da console\n");
+		printf("Erro ao obter handle para a sa√≠da da console\n");
 	SetConsoleTextAttribute(hOut, WHITE);
 
 	while (true) {
-		ret = WaitForMultipleObjects(2, eventos_esc, FALSE, INFINITE); // Checa se memÛria est· cheia ou eventos
+		ret = WaitForMultipleObjects(2, eventos_esc, FALSE, INFINITE); // Checa se mem√≥ria est√° cheia ou eventos
 		nTipoEvento = ret - WAIT_OBJECT_0;
 
 		if (nTipoEvento == 0) break;
 		else {
-			/* Inicializa Winsock vers„o 2.2 */
+			/* Inicializa Winsock vers√£o 2.2 */
 			status = WSAStartup(MAKEWORD(2, 2), &wsaData);
 			if (status != 0) {
 				SetConsoleTextAttribute(hOut, HLRED);
@@ -315,7 +310,7 @@ DWORD WINAPI Cliente_socketHelper(LPVOID) {
 				SetConsoleTextAttribute(hOut, HLRED);
 				status = WSAGetLastError();
 				if (status == WSAENETDOWN)
-					printf("Rede ou servidor de sockets inacessÌveis!\n");
+					printf("Rede ou servidor de sockets inacess√≠veis!\n");
 				else
 					printf("Falha na rede: codigo de erro = %d\n", status);
 				SetConsoleTextAttribute(hOut, WHITE);
@@ -324,8 +319,8 @@ DWORD WINAPI Cliente_socketHelper(LPVOID) {
 			}
 
 			/* Permite a possibilidade de reuso deste socket, de forma que,   */
-			/* se uma inst‚ncia anterior deste programa tiver sido encerrada  */
-			/* com CTRL-C por exemplo, n„o ocorrera' o erro "10048" ("address */
+			/* se uma inst√¢ncia anterior deste programa tiver sido encerrada  */
+			/* com CTRL-C por exemplo, n√£o ocorrera' o erro "10048" ("address */
 			/* already in use") na operacao de BIND                           */
 			int optval = 1;
 			setsockopt(cliente, SOL_SOCKET, SO_REUSEADDR, (const char*)&optval, sizeof(optval));
@@ -356,7 +351,7 @@ DWORD WINAPI Cliente_socketHelper(LPVOID) {
 			}
 
 
-			/* DISPARA AS THREADS PERI”DICA E APERI”DICA E ESPERA ERRO DE CONEX√O */
+			/* DISPARA AS THREADS PERI√ìDICA E APERI√ìDICA E ESPERA ERRO DE CONEX√ÉO */
 			HANDLE client_socketp = CreateThread(NULL, 0, Cliente_socketp, NULL, 0, NULL);
 			HANDLE client_socketap = CreateThread(NULL, 0, Cliente_socketap, NULL, 0, NULL);
 			HANDLE eventos_erro[3] = { tecla_ESC, client_socketp, client_socketap };    // Handle das threads e ESC
@@ -407,15 +402,15 @@ DWORD WINAPI Cliente_socketp(LPVOID) {
 	// Handle do console
 	HANDLE hOut;
 
-	// ObtÈm um handle para a saÌda da console
+	// Obt√©m um handle para a sa√≠da da console
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (hOut == INVALID_HANDLE_VALUE)
-		printf("Erro ao obter handle para a saÌda da console\n");
+		printf("Erro ao obter handle para a sa√≠da da console\n");
 	SetConsoleTextAttribute(hOut, WHITE);
 
-	// *** Neste ponto o cliente envia requisiÁıes ao servidor e recebe as respostas ***.
+	// *** Neste ponto o cliente envia requisi√ß√µes ao servidor e recebe as respostas ***.
 	while (true) {
-		ret = WaitForMultipleObjects(2, eventos_esc, FALSE, INFINITE); // Checa se memÛria est· cheia ou eventos
+		ret = WaitForMultipleObjects(2, eventos_esc, FALSE, INFINITE); // Checa se mem√≥ria est√° cheia ou eventos
 		nTipoEvento = ret - WAIT_OBJECT_0;
 
 		if (nTipoEvento == 0) break;
@@ -480,17 +475,17 @@ DWORD WINAPI Cliente_socketap(LPVOID) {
 	// Handle do console
 	HANDLE hOut;
 
-	// ObtÈm um handle para a saÌda da console
+	// Obt√©m um handle para a sa√≠da da console
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (hOut == INVALID_HANDLE_VALUE)
-		printf("Erro ao obter handle para a saÌda da console\n");
+		printf("Erro ao obter handle para a sa√≠da da console\n");
 	SetConsoleTextAttribute(hOut, WHITE);
 
 	char* token;
 
-	// *** Neste ponto o cliente envia requisiÁıes ao servidor e recebe as respostas ***.
+	// *** Neste ponto o cliente envia requisi√ß√µes ao servidor e recebe as respostas ***.
 	while (true) {
-		ret = WaitForMultipleObjects(2, eventos_s, FALSE, INFINITE); // Checa se memÛria est· cheia ou eventos
+		ret = WaitForMultipleObjects(2, eventos_s, FALSE, INFINITE); // Checa se mem√≥ria est√° cheia ou eventos
 		nTipoEvento = ret - WAIT_OBJECT_0;
 
 		if (nTipoEvento == 0) break;
@@ -501,7 +496,7 @@ DWORD WINAPI Cliente_socketap(LPVOID) {
 			/* CHECAR CONTAGEM */
 			if (++contagem > 99999) contagem = 1;
 
-			/* Envia mensagem de requisiÁ„o */
+			/* Envia mensagem de requisi√ß√£o */
 			memset(buf, 0, sizeof(buf));
 			sprintf(buf, "%05d", contagem);
 			memcpy(msgreq, buf, 5);
@@ -533,7 +528,7 @@ DWORD WINAPI Cliente_socketap(LPVOID) {
 			memset(buf, 0, sizeof(buf));
 			strcpy(buf, msgsp2);
 
-			// Coloca na memÛria cada par‚metro
+			// Coloca na mem√≥ria cada par√¢metro
 			token = strtok(buf, "$");        // ID
 			token = strtok(NULL, "$");       // codigo
 
@@ -585,11 +580,11 @@ DWORD WINAPI Cliente_OPC(LPVOID)
 	// Handle do console
 	HANDLE hOut;
 
-	// ObtÈm um handle para a saÌda da console
+	// Obt√©m um handle para a sa√≠da da console
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (hOut == INVALID_HANDLE_VALUE) {
 		SetConsoleTextAttribute(hOut, HLRED);
-		printf("Erro ao obter handle para a saÌda da console\n");
+		printf("Erro ao obter handle para a sa√≠da da console\n");
 		SetConsoleTextAttribute(hOut, WHITE);
 	}
 
@@ -646,7 +641,7 @@ DWORD WINAPI Cliente_OPC(LPVOID)
 
 	AddTheItem(pIOPCItemMgt, hServerItem1, hServerItem2, hServerItem3, hServerItem4, hServerItem5, hServerItem6, hServerItem7, hServerItem8, hServerItem9, hServerItem10);
 
-	// Lendo de forma assÌncrona
+	// Lendo de forma ass√≠ncrona
 
 	int bRet;
 	MSG msg;
@@ -668,7 +663,7 @@ DWORD WINAPI Cliente_OPC(LPVOID)
 
 	while (true) {
 
-		ret = WaitForMultipleObjects(2, eventos, FALSE, INFINITE); // Checa se memÛria est· cheia ou eventos
+		ret = WaitForMultipleObjects(2, eventos, FALSE, INFINITE); // Checa se mem√≥ria est√° cheia ou eventos
 		nTipoEvento = ret - WAIT_OBJECT_0;
 
 		if (nTipoEvento == 0) break;
@@ -733,7 +728,7 @@ DWORD WINAPI Cliente_OPC(LPVOID)
 				SetConsoleTextAttribute(hOut, WHITE);
 				ReleaseMutex(mutex_escrita);
 
-				// Zera o valor da mensagem de par‚metros para evitar impressıes repetitivas
+				// Zera o valor da mensagem de par√¢metros para evitar impress√µes repetitivas
 				memset(msgsp2, 0, sizeof(msgsp2));
 
 			}
